@@ -29,11 +29,11 @@ android {
 
 dependencies {
 
+    //outside library for crop image
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //outside library for photo filters
     implementation 'com.github.zomato:androidphotofilters:1.0.2'
-    //outside library for crop image
-    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'

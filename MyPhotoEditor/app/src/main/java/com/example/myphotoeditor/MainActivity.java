@@ -23,6 +23,7 @@ import com.zomato.photofilters.imageprocessors.subfilters.ColorOverlaySubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.ToneCurveSubFilter;
 
+//library used for crop
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.FileNotFoundException;
@@ -113,19 +114,53 @@ public class MainActivity extends AppCompatActivity {
     //when the crop button is pressed
     public void cropPhoto(View view){
 
-        //get picture's bitmap
-        BitmapDrawable convert1 = (BitmapDrawable) pic.getDrawable();
-        Bitmap convert2 = convert1.getBitmap();
+        if (pic.getDrawable() != null) {
+            //minimize image view
+            pic.requestLayout();
+            pic.getLayoutParams().height = 300;
 
-        //crop picture to square
-        crop.setImageBitmap(convert2);
+            crop.requestLayout();
+            crop.getLayoutParams().height = 700;
 
-        //get cropped
-        Bitmap cropped = crop.getCroppedImage();
+            BitmapDrawable convert1 = (BitmapDrawable) pic.getDrawable();
+            Bitmap convert2 = convert1.getBitmap();
+            Bitmap copy = convert2.copy(Bitmap.Config.ARGB_8888, true);
 
-        //set photo to new cropped
-        pic.setImageBitmap(cropped);
+            //add the image to cropper screen
+            crop.setImageBitmap(copy);
+        }
+        else{
+            System.out.println("please select a photo first!");
+        }
+
     }
+
+    //when the crop button is pressed
+    public void saveCrop(View view){
+
+        //make sure there is an image and that crop image was pressed first
+        if (pic.getDrawable() != null && crop.getCroppedImage() != null) {
+
+            //make image view big again after the save
+            pic.requestLayout();
+            pic.getLayoutParams().height = 1000;
+
+            //make crop "disappear" when user saves
+            crop.requestLayout();
+            crop.getLayoutParams().height = 1;
+
+            //get cropped
+            Bitmap cropped = crop.getCroppedImage();
+
+            //set photo to new cropped
+            pic.setImageBitmap(cropped);
+        }
+        else{
+            System.out.println("please select a photo and/or select crop photo first");
+        }
+    }
+
+
 
     //has the user select an image from their library
     private void pickImage(){
@@ -152,7 +187,9 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("something went wrong");
             }
 
-        }else {
+        }
+
+        else {
             System.out.println("havent picked image");
         }
     }
